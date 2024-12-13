@@ -40,7 +40,14 @@ if [ ${machine} == "Linux" ]; then
 
     sudo apt -y install clang-format
 
-    sudo apt -y install eza
+    # install eza
+    sudo apt install -y gpg
+    sudo mkdir -p /etc/apt/keyrings
+    wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | sudo gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
+    echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" | sudo tee /etc/apt/sources.list.d/gierens.list
+    sudo chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.list
+    sudo apt update
+    sudo apt install -y eza
 
     # install neovim
     curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
@@ -56,6 +63,10 @@ if [ ${machine} == "Linux" ]; then
     curl -fsSL https://install.ohmyz.sh/ > ohmyzshsetup
     chmod +x ohmyzshsetup
     yes N | ./ohmyzshsetup
+    #install zsh plugins
+    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+    omz reload
 
     # plugin manager for tmux
     # git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
@@ -74,7 +85,7 @@ fi
     #    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 # create symlinks for all files in this folder
-stow --adopt .
+# stow --adopt .
 
 #install plugins for vim and nvim
 # vim +PlugInstall +qall > /dev/null
