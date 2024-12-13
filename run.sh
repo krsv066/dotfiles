@@ -10,7 +10,7 @@ case "${unameOut}" in
 esac
 echo Installing configs for $machine
 
-if [ ${machine} == "Mac" ]; then
+# if [ ${machine} == "Mac" ]; then
     # brew install tmux
     # brew install neovim
     # brew install stow
@@ -31,7 +31,7 @@ if [ ${machine} == "Mac" ]; then
     # defaults delete com.apple.Dock appswitcher-all-displays; killall Dock
 
     # TODO
-elif [ ${machine} == "Linux" ]; then
+if [ ${machine} == "Linux" ]; then
     sudo apt update
     sudo apt -y install tmux
     # manager symlinks
