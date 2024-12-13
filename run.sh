@@ -19,6 +19,7 @@ if [ ${machine} == "Linux" ]; then
     
     sudo apt -y install tmux
 
+    sudo apt -y install clang
     sudo apt -y install clang-format
 
     # install eza
