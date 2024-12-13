@@ -15,8 +15,11 @@ echo Installing configs for $machine
 
 if [ ${machine} == "Linux" ]; then
     sudo apt update
-    sudo apt -y install git wget curl
+    sudo apt -y install wget
+    sudo apt -y install curl
     
+    sudo apt -y install telegram-desktop
+
     sudo apt -y install tmux
 
     sudo apt -y install clang
@@ -39,6 +42,17 @@ if [ ${machine} == "Linux" ]; then
     PATH="$PATH:/opt/nvim-linux64/bin"
     sudo rm -rf ~/.config/nvim
     cp -R .config/nvim  ~/.config
+
+    #install kitty
+    curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
+    ln -sf ~/.local/kitty.app/bin/kitty ~/.local/kitty.app/bin/kitten /usr/local/bin/
+    cp ~/.local/kitty.app/share/applications/kitty.desktop ~/.local/share/applications/
+    cp ~/.local/kitty.app/share/applications/kitty-open.desktop ~/.local/share/applications/
+    sed -i "s|Icon=kitty|Icon=$(readlink -f ~)/.local/kitty.app/share/icons/hicolor/256x256/apps/kitty.png|g" ~/.local/share/applications/kitty*.desktop
+    sed -i "s|Exec=kitty|Exec=$(readlink -f ~)/.local/kitty.app/bin/kitty|g" ~/.local/share/applications/kitty*.desktop
+    echo 'kitty.desktop' > ~/.config/xdg-terminals.list
+    sudo rm ~/.config/kitty/kitty.conf
+    cp kitty.conf ~/.config/kitty
 
     #install zsh
     sudo apt -y install zsh
