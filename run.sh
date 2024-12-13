@@ -15,6 +15,7 @@ echo Installing configs for $machine
 
 if [ ${machine} == "Linux" ]; then
     sudo apt update
+    sudo apt -y install neofetch
     sudo apt -y install wget
     sudo apt -y install curl
     
@@ -39,7 +40,6 @@ if [ ${machine} == "Linux" ]; then
     echo "Removing nvim installed with apt"
     sudo rm -rf /opt/nvim
     sudo tar -C /opt -xzf nvim-linux64.tar.gz
-    PATH="$PATH:/opt/nvim-linux64/bin"
     sudo rm -rf ~/.config/nvim
     cp -R .config/nvim  ~/.config
 
@@ -51,8 +51,8 @@ if [ ${machine} == "Linux" ]; then
     sed -i "s|Icon=kitty|Icon=$(readlink -f ~)/.local/kitty.app/share/icons/hicolor/256x256/apps/kitty.png|g" ~/.local/share/applications/kitty*.desktop
     sed -i "s|Exec=kitty|Exec=$(readlink -f ~)/.local/kitty.app/bin/kitty|g" ~/.local/share/applications/kitty*.desktop
     echo 'kitty.desktop' > ~/.config/xdg-terminals.list
-    sudo rm ~/.config/kitty/kitty.conf
-    cp kitty.conf ~/.config/kitty
+    sudo rm -rf ~/.config/kitty
+    cp -R kitty ~/.config
 
     #install zsh
     sudo apt -y install zsh
@@ -66,7 +66,9 @@ if [ ${machine} == "Linux" ]; then
     #install zsh plugins
     git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
     git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+    zsh
     omz reload
+    path+=('/opt/nvim-linux64/bin')
 fi
 
 #set zsh as deefault shell
